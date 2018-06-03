@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Agency;
+use Foo\Bar\A;
 use Illuminate\Http\Request;
 
 class AgenciesController extends Controller
@@ -13,6 +14,10 @@ class AgenciesController extends Controller
      */
     public function index(){
         return response()->json(['data' => Agency::all()],200);
+    }
+
+    public function show(Agency $agency){
+        return response()->json(['data' => $agency],200);
     }
 
     /**
@@ -33,5 +38,14 @@ class AgenciesController extends Controller
     public function update(Request $request,Agency $agency){
         $agency->update($request->all());
         return response()->json(['data' => $agency],201);
+    }
+
+    /**
+     *deleting an agency
+     *
+     */
+    public function destroy(Agency $agency){
+        Agency::destroy($agency->id);
+        return response()->json(['status' => true],200);
     }
 }
