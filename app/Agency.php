@@ -7,5 +7,4 @@ use Illuminate\Database\Eloquent\Model;
 class Agency extends Model
 {
     protected $guarded = [];
-    protected $hidden = ['password'];
 }

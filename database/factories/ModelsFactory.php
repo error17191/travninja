@@ -25,11 +25,9 @@ $factory->define(App\User::class, function (Faker $faker) {
 
 $factory->define(Agency::class, function (Faker $faker) {
     return [
-        'name' => $faker->company,
-        'password' => bcrypt('admin'),
-        'admin_email' => $faker->email,
-        'admin_username' => $faker->userName,
-        'admin_name' => $faker->name,
-        'uid' => $faker->unique()->slug
+        'name' => $faker->name,
+        'uid' => $faker->unique()->slug,
+        'phone' => $faker->phoneNumber,
+        'mobil' => $faker->phoneNumber
     ];
 });
