@@ -2,13 +2,13 @@
 
 use Illuminate\Http\Request;
 
-Route::post('agencies', 'AgenciesController@store' )
+Route::post('agencies', 'AgenciesController@store')
     ->name('agencies.store');
-Route::get('agencies','AgenciesController@index')
-    ->name('agencies.show.all');
-Route::put('agency/{agency}','AgenciesController@update')
-    ->name('agency.update');
-Route::get('agency/{agency}','AgenciesController@show')
-    ->name('agency.show.one');
-Route::delete('agency/{agency}','AgenciesController@destroy')
-    ->name('agency.destroy');
+Route::get('agencies', 'AgenciesController@index')
+    ->name('agencies.index');
+Route::put('agencies/{agency}', 'AgenciesController@update')
+    ->name('agencies.update');
+Route::get('agencies/{agency}', 'AgenciesController@show')
+    ->name('agencies.show');
+Route::delete('agencies/{agency}', 'AgenciesController@destroy')
+    ->name('agencies.destroy');

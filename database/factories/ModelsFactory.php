@@ -28,6 +28,6 @@ $factory->define(Agency::class, function (Faker $faker) {
         'name' => $faker->name,
         'uid' => $faker->unique()->slug,
         'phone' => $faker->phoneNumber,
-        'mobil' => $faker->phoneNumber
+        'mobile' => $faker->phoneNumber
     ];
 });

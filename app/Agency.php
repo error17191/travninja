@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agency extends Model
 {
-    protected $guarded = [];
+    protected $fillable = ['name', 'mobile', 'phone', 'uid'];
 }

@@ -12,16 +12,21 @@ class AgenciesController extends Controller
      *show all agencies
      *
      */
-    public function index(){
-        return response()->json(['data' => Agency::all()],200);
+    public function index()
+    {
+        return response()->json(['data' => Agency::all()]);
     }
 
     /**
      *show one agency
      *
+     * @param \App\Agency $agency
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Agency $agency){
-        return response()->json(['data' => $agency],200);
+    public function show(Agency $agency)
+    {
+        return response()->json(['data' => $agency]);
     }
 
     /**
@@ -30,9 +35,9 @@ class AgenciesController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate($this->validations());
+        $request->validate($this->rules());
         $data = $request->all();
-        $agency = Agency::create($data);
+        $agency = Agency::create($request->all());
         return response()->json(['data' => $agency], 201);
     }
 
@@ -40,37 +45,38 @@ class AgenciesController extends Controller
      *update an agency
      *
      */
-    public function update(Request $request,Agency $agency){
-        $validations = $this->validations();
-        $validations['uid'] = [
-            'required',
-            'max:255',
-            Rule::unique('agencies','uid')->ignore($agency->id)
-        ];
-        $request->validate($validations);
+    public function update(Request $request, Agency $agency)
+    {
+        $request->validate($this->rules($agency));
         $agency->update($request->all());
-        return response()->json(['data' => $agency],201);
+        return response()->json(['data' => $agency]);
     }
 
     /**
      *deleting an agency
      *
      */
-    public function destroy(Agency $agency){
-        Agency::destroy($agency->id);
-        return response()->json(['status' => true],200);
+    public function destroy(Agency $agency)
+    {
+        $agency->delete();
+        return response()->json(['status' => true]);
     }
 
     /**
      *create an validation array
      *
      */
-    private function validations(){
+    private function rules($agency = null)
+    {
         return [
             'name' => 'required|max:255',
             'phone' => 'required|max:255',
-            'mobil' => 'required|max:255',
-            'uid' => 'required|unique:agencies,uid'
+            'mobile' => 'required|max:255',
+            'uid' => $agency ? [
+                'required',
+                'max:255',
+                Rule::unique('agencies', 'uid')->ignore($agency->id)
+            ] : 'required|unique:agencies,uid'
         ];
     }
 }

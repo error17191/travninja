@@ -18,7 +18,7 @@ class CreateAgenciesTable extends Migration
             $table->string('uid')->unique();
             $table->string('name');
             $table->string('phone');
-            $table->string('mobil');
+            $table->string('mobile');
             $table->timestamps();
         });
     }
