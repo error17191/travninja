@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Agency;
-use Foo\Bar\A;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class AgenciesController extends Controller
@@ -26,6 +26,7 @@ class AgenciesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate($this->validations());
         $data = $request->all();
         $agency = Agency::create($data);
         return response()->json(['data' => $agency], 201);
@@ -36,6 +37,12 @@ class AgenciesController extends Controller
      *
      */
     public function update(Request $request,Agency $agency){
+        $validations = $this->validations();
+        $validations['uid'] = [
+            'required',
+            Rule::unique('agencies','uid')->ignore($agency->id)
+        ];
+        $request->validate($validations);
         $agency->update($request->all());
         return response()->json(['data' => $agency],201);
     }
@@ -47,5 +54,14 @@ class AgenciesController extends Controller
     public function destroy(Agency $agency){
         Agency::destroy($agency->id);
         return response()->json(['status' => true],200);
+    }
+
+    private function validations(){
+        return [
+            'name' => 'required|max:255',
+            'phone' => 'required|max:255',
+            'mobil' => 'required|max:255',
+            'uid' => 'required|unique:agencies,uid'
+        ];
     }
 }
