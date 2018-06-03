@@ -16,6 +16,10 @@ class AgenciesController extends Controller
         return response()->json(['data' => Agency::all()],200);
     }
 
+    /**
+     *show one agency
+     *
+     */
     public function show(Agency $agency){
         return response()->json(['data' => $agency],200);
     }
@@ -40,6 +44,7 @@ class AgenciesController extends Controller
         $validations = $this->validations();
         $validations['uid'] = [
             'required',
+            'max:255',
             Rule::unique('agencies','uid')->ignore($agency->id)
         ];
         $request->validate($validations);
@@ -56,6 +61,10 @@ class AgenciesController extends Controller
         return response()->json(['status' => true],200);
     }
 
+    /**
+     *create an validation array
+     *
+     */
     private function validations(){
         return [
             'name' => 'required|max:255',
