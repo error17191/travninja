@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 class AgenciesController extends Controller
 {
     /**
-     *show all agencies
+     * show all agencies
      *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -32,6 +33,9 @@ class AgenciesController extends Controller
     /**
      * store new agency
      *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -42,8 +46,12 @@ class AgenciesController extends Controller
     }
 
     /**
-     *update an agency
+     * update an agency
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Agency $agency
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Agency $agency)
     {
@@ -53,8 +61,11 @@ class AgenciesController extends Controller
     }
 
     /**
-     *deleting an agency
+     * deleting an agency
      *
+     * @param \App\Agency $agency
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Agency $agency)
     {
@@ -63,10 +74,13 @@ class AgenciesController extends Controller
     }
 
     /**
-     *create an validation array
+     * create an validation array
      *
+     * @param \App\Agency|null $agency
+     *
+     * @return array
      */
-    private function rules($agency = null)
+    private function rules(Agency $agency = null)
     {
         return [
             'name' => 'required|max:255',
@@ -76,7 +90,7 @@ class AgenciesController extends Controller
                 'required',
                 'max:255',
                 Rule::unique('agencies', 'uid')->ignore($agency->id)
-            ] : 'required|unique:agencies,uid'
+            ] : 'required|unique:agencies,uid|max:255'
         ];
     }
 }
