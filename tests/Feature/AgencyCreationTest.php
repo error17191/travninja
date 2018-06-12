@@ -23,11 +23,9 @@ class AgencyCreationTest extends TestCase
         $this->assertCount(1, Agency::all());
         $response->assertJson(['data' => $data]);
         $content = json_decode($response->content(), true)['data'];
-
         unset($content["id"]);
         unset($content['created_at']);
         unset($content['updated_at']);
-
         $this->assertEquals(count($data), count($content));
         $diff = array_diff($data, $content);
         $this->assertCount(0, $diff);
@@ -43,8 +41,7 @@ class AgencyCreationTest extends TestCase
         $response->assertJsonCount(1);
         $response->assertStatus(200);
         $content = json_decode($response->content(), true)['data'];
-        $this->assertEquals(1, $this->count($content));
-
+        $this->assertEquals(1, count($content));
         $this->assertEquals(count($data), count($content[0]));
         $diff = array_diff($data, $content[0]);
         $this->assertCount(0, $diff);
@@ -56,14 +53,12 @@ class AgencyCreationTest extends TestCase
         $agency = factory(Agency::class)->create();
         $data = $agency->toArray();
         //testing the update agency feature
-
         $data['name'] .= '-new';
-
+        unset($data['updated_at']);
         $response = $this->put(route('agencies.update', $agency), $data);
         $response->assertJson(['data' => $data]);
-
         $content = json_decode($response->content(), true)['data'];
-
+        unset($content['updated_at']);
         $this->assertEquals(count($data), count($content));
         $diff = array_diff($data, $content);
         $this->assertCount(0, $diff);
@@ -74,7 +69,6 @@ class AgencyCreationTest extends TestCase
     {
         //creating new agency
         $agency = factory(Agency::class)->create();
-
         //testing delete agency feature
         $response = $this->delete(route('agencies.destroy', $agency));
         $this->assertCount(0, Agency::all());
@@ -87,15 +81,12 @@ class AgencyCreationTest extends TestCase
     {
         //creating new agency
         $agency = factory(Agency::class)->create();
-
         //testing show one agency feature
         $response = $this->get(route('agencies.show', 1));
         $response->assertStatus(200);
         $data = $agency->toArray();
-
         $response->assertJson(['data' => $data]);
         $content = json_decode($response->content(), true)['data'];
-
         $this->assertEquals(count($data), count($content));
         $diff = array_diff($data, $content);
         $this->assertCount(0, $diff);
@@ -161,7 +152,6 @@ class AgencyCreationTest extends TestCase
         //creating new agency
         $this->expectException(ValidationException::class);
         $agency = factory(Agency::class)->create();
-
         //test the required on uid field
         $data['uid'] = '';
         $this->put(route('agencies.update', 1), $data);
@@ -193,7 +183,6 @@ class AgencyCreationTest extends TestCase
         //creating new agency
         $this->expectException(ValidationException::class);
         $agency = factory(Agency::class)->create();
-
         //testing the unique validation
         $this->post(route('agencies.store'), $agency->toArray());
     }
@@ -203,9 +192,7 @@ class AgencyCreationTest extends TestCase
         //creating new agency
         $this->expectException(ValidationException::class);
         $agency = factory(Agency::class)->create();
-
         $anotherAgency = factory(Agency::class)->create();
-
         //test the unique validation
         $this->put(route('agencies.update', $agency), $anotherAgency->toArray());
     }

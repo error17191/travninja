@@ -13,9 +13,9 @@ class AgenciesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['data' => Agency::all()]);
+        return response()->json(['data' => Agency::filter($request)->get()]);
     }
 
     /**
@@ -25,7 +25,7 @@ class AgenciesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Agency $agency)
+    public function show(Agency $agency): \Illuminate\Http\JsonResponse
     {
         return response()->json(['data' => $agency]);
     }
@@ -37,7 +37,7 @@ class AgenciesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate($this->rules());
         $data = $request->all();
@@ -53,7 +53,7 @@ class AgenciesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Agency $agency)
+    public function update(Request $request, Agency $agency): \Illuminate\Http\JsonResponse
     {
         $request->validate($this->rules($agency));
         $agency->update($request->all());
@@ -67,7 +67,7 @@ class AgenciesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Agency $agency)
+    public function destroy(Agency $agency): \Illuminate\Http\JsonResponse
     {
         $agency->delete();
         return response()->json(['status' => true]);
@@ -80,7 +80,7 @@ class AgenciesController extends Controller
      *
      * @return array
      */
-    private function rules(Agency $agency = null)
+    private function rules(Agency $agency = null): array
     {
         return [
             'name' => 'required|max:255',
