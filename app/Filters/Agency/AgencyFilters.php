@@ -12,7 +12,14 @@ use App\Filters\FiltersAbstract;
 
 class AgencyFilters extends FiltersAbstract
 {
+    /**
+     * @var array $filters
+     */
     protected $filters = [
-        'name' => NameFilter::class
+        'name' => NameFilter::class ,
+        'phone' => PhoneFilter::class ,
+        'mobile' => MobilFilter::class ,
+        'uid' => UidFilter::class ,
+        'all' => AllFilter::class
     ];
 }
